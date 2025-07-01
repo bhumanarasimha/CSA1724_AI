@@ -1,0 +1,37 @@
+import itertools
+
+def tsp_brute_force(graph):
+    n = len(graph)
+    min_path = float('inf')
+    best_order = []
+    
+    # Generate all permutations of cities except the starting city (0)
+    for perm in itertools.permutations(range(1, n)):
+        current_cost = 0
+        k = 0  # Starting from city 0
+        for j in perm:
+            current_cost += graph[k][j]
+            k = j
+        current_cost += graph[k][0]  # Return to the starting city
+
+        if current_cost < min_path:
+            min_path = current_cost
+            best_order = (0,) + perm + (0,)
+    
+    return min_path, best_order
+
+
+# Example graph (symmetric matrix where graph[i][j] is the cost from i to j)
+graph = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+min_cost, best_path = tsp_brute_force(graph)
+print("Minimum travel cost:", min_cost)
+print("Best path:", best_path)
+
+
+
