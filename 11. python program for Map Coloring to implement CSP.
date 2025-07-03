@@ -1,0 +1,46 @@
+# Define the map: each region and its neighbors
+map_adj = {
+    'WA': ['NT', 'SA'],
+    'NT': ['WA', 'SA', 'Q'],
+    'SA': ['WA', 'NT', 'Q', 'NSW', 'V'],
+    'Q':  ['NT', 'SA', 'NSW'],
+    'NSW': ['Q', 'SA', 'V'],
+    'V':  ['SA', 'NSW'],
+    'T':  []  # Tasmania has no neighbors
+}
+
+# Define the available colors
+colors = ['Red', 'Green', 'Blue']
+
+# To store the color assigned to each region
+assignment = {}
+
+# Function to check if the current color assignment is valid
+def is_valid(region, color):
+    for neighbor in map_adj[region]:
+        if neighbor in assignment and assignment[neighbor] == color:
+            return False
+    return True
+
+# Backtracking search
+def backtrack(regions):
+    if not regions:
+        return True  # All regions are colored
+
+    region = regions[0]
+    for color in colors:
+        if is_valid(region, color):
+            assignment[region] = color
+            if backtrack(regions[1:]):
+                return True
+            del assignment[region]  # Backtrack
+    return False
+
+# Solve the map coloring problem
+regions = list(map_adj.keys())
+if backtrack(regions):
+    print("Map Coloring Solution:")
+    for region in regions:
+        print(f"{region}: {assignment[region]}")
+else:
+    print("No solution found.")
