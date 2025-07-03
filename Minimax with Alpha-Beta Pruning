@@ -1,0 +1,31 @@
+# Minimax Algorithm with Alpha-Beta Pruning
+
+def minimax(depth, node_index, is_max, values, alpha, beta):
+    # Base case: leaf node
+    if depth == 3:
+        return values[node_index]
+
+    if is_max:
+        best = -float('inf')
+        # Recur for left and right children
+        for i in range(2):
+            val = minimax(depth + 1, node_index * 2 + i, False, values, alpha, beta)
+            best = max(best, val)
+            alpha = max(alpha, best)
+            if beta <= alpha:
+                break  # Beta cut-off
+        return best
+    else:
+        best = float('inf')
+        for i in range(2):
+            val = minimax(depth + 1, node_index * 2 + i, True, values, alpha, beta)
+            best = min(best, val)
+            beta = min(beta, best)
+            if beta <= alpha:
+                break  # Alpha cut-off
+        return best
+
+# Example leaf node values for a game tree (3 levels)
+values = [3, 5, 6, 9, 1, 2, 0, -1]
+
+print("Best value (with Alpha-Beta Pruning):", minimax(0, 0, True, values, -float('inf'), float('inf')))
