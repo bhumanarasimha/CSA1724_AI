@@ -1,0 +1,39 @@
+# Import necessary libraries
+from sklearn import tree
+
+# Step 1: Prepare sample data
+# Features: [Outlook, Temperature, Humidity, Windy]
+# Outlook: Sunny=0, Overcast=1, Rain=2
+# Temperature: Hot=0, Mild=1, Cool=2
+# Humidity: High=0, Normal=1
+# Windy: False=0, True=1
+
+X = [
+    [0, 0, 0, 0],  # Sunny, Hot, High, False
+    [0, 0, 0, 1],
+    [1, 0, 0, 0],
+    [2, 1, 0, 0],
+    [2, 2, 1, 0],
+    [2, 2, 1, 1],
+    [1, 2, 1, 1],
+    [0, 1, 0, 0],
+    [0, 2, 1, 0],
+    [2, 1, 1, 0],
+]
+
+# Labels (PlayTennis): 1 = Yes, 0 = No
+y = [0, 0, 1, 1, 1, 0, 1, 0, 1, 1]
+
+# Step 2: Create and train the Decision Tree
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(X, y)
+
+# Step 3: Predict a new situation
+# Example: Outlook=Rain (2), Temp=Cool (2), Humidity=Normal (1), Windy=True (1)
+prediction = clf.predict([[2, 2, 1, 1]])
+print("Play Tennis?" , "Yes" if prediction[0] == 1 else "No")
+
+# Step 4: Visualize the tree (Optional)
+import matplotlib.pyplot as plt
+tree.plot_tree(clf, feature_names=['Outlook','Temp','Humidity','Windy'], class_names=['No','Yes'], filled=True)
+plt.show()
